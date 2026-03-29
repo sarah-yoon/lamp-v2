@@ -1,0 +1,72 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+
+const NAV_LINKS = [
+  { href: "/explore", label: "Explore", icon: "🎵" },
+  { href: "/trending", label: "Trending", icon: "🔥" },
+  { href: "/saved", label: "Saved", icon: "🔖" },
+];
+
+export default function Sidebar({ username }: { username: string }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const supabase = createClient();
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
+
+  return (
+    <aside className="hidden md:flex flex-col fixed left-0 top-0 h-full w-[220px] bg-bg-light border-r border-surface-border z-40">
+      {/* Logo */}
+      <div className="px-6 py-5 flex items-center gap-2">
+        <span className="text-xl font-bold text-text-primary tracking-tight">
+          LAMP
+        </span>
+        <span className="w-2 h-2 rounded-full bg-accent-coral inline-block" />
+      </div>
+
+      {/* Nav links */}
+      <nav className="flex-1 px-3 py-2 flex flex-col gap-1">
+        {NAV_LINKS.map(({ href, label, icon }) => {
+          const isActive = pathname === href || pathname.startsWith(href + "/");
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={[
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors",
+                isActive
+                  ? "bg-surface text-accent-gold font-medium"
+                  : "text-text-secondary hover:text-text-primary hover:bg-surface",
+              ].join(" ")}
+            >
+              <span className="text-base">{icon}</span>
+              {label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* User section */}
+      <div className="px-3 py-4 border-t border-surface-border">
+        <div className="flex items-center gap-3 px-3 py-2 mb-1">
+          <div className="w-8 h-8 rounded-full bg-accent-gold flex items-center justify-center text-bg font-semibold text-sm flex-shrink-0">
+            {username[0]?.toUpperCase()}
+          </div>
+          <span className="text-sm text-text-primary truncate">{username}</span>
+        </div>
+        <button
+          onClick={handleSignOut}
+          className="w-full text-left px-3 py-2 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-surface transition-colors"
+        >
+          Sign out
+        </button>
+      </div>
+    </aside>
+  );
+}
