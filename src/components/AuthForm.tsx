@@ -15,6 +15,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [confirmationSent, setConfirmationSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,9 +26,19 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({ email, password });
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+        });
         if (error) throw error;
-        router.push("/onboarding");
+        // If email confirmation is enabled, user won't have a session yet
+        if (data.session) {
+          router.push("/onboarding");
+          router.refresh();
+        } else {
+          setConfirmationSent(true);
+        }
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -44,6 +55,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
         } else {
           router.push("/onboarding");
         }
+        router.refresh();
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -55,6 +67,25 @@ export default function AuthForm({ mode }: AuthFormProps) {
       setLoading(false);
     }
   };
+
+  if (confirmationSent) {
+    return (
+      <div className="w-full max-w-sm text-center">
+        <h1 className="text-3xl font-bold tracking-tight text-text-primary mb-4">
+          LAMP<span className="text-accent-coral">.</span>
+        </h1>
+        <div className="bg-accent-gold/10 border border-accent-gold/20 rounded-lg px-6 py-5 mb-4">
+          <p className="text-accent-gold font-medium mb-1">Check your email</p>
+          <p className="text-text-secondary text-sm">
+            We sent a confirmation link to <strong className="text-text-primary">{email}</strong>. Click the link to activate your account.
+          </p>
+        </div>
+        <p className="text-text-tertiary text-xs">
+          Didn't get the email? Check your spam folder.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-sm">
