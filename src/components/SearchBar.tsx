@@ -26,11 +26,15 @@ export function SearchBar({ onResults, onLoading, placeholder = "Search albums..
     timerRef.current = setTimeout(async () => {
       try {
         const res = await fetch(`/api/spotify/search?q=${encodeURIComponent(query.trim())}`);
-        if (res.ok) {
-          const data = await res.json();
+        const data = await res.json();
+        if (res.ok && Array.isArray(data)) {
           onResults(data);
+        } else {
+          console.error("Search failed:", data);
+          onResults([]);
         }
-      } catch {
+      } catch (err) {
+        console.error("Search fetch error:", err);
         onResults([]);
       } finally {
         onLoading(false);

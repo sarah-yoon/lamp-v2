@@ -92,10 +92,10 @@ create policy "Users can update own profile" on profiles for update using (auth.
 create policy "Users can insert own profile" on profiles for insert with check (auth.uid() = id);
 
 -- RLS: Reviews
+-- Note: Review-lock mechanic is enforced at the API route level, not RLS.
+-- RLS allows all authenticated users to read reviews; the API gates visibility.
 alter table reviews enable row level security;
-create policy "Users can read own reviews" on reviews for select using (auth.uid() = user_id);
-create policy "Users can read reviews for albums they reviewed" on reviews for select
-  using (spotify_album_id in (select spotify_album_id from reviews where user_id = auth.uid()));
+create policy "Authenticated users can read reviews" on reviews for select using (auth.uid() is not null);
 create policy "Users can insert own reviews" on reviews for insert with check (auth.uid() = user_id);
 create policy "Users can update own reviews" on reviews for update using (auth.uid() = user_id);
 create policy "Users can delete own reviews" on reviews for delete using (auth.uid() = user_id);

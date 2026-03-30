@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (error) {
+    console.error("Review insert error:", error.code, error.message, error.details);
     if (error.code === "23505") {
       return NextResponse.json({ error: "You've already reviewed this album" }, { status: 409 });
     }

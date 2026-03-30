@@ -10,10 +10,10 @@ export async function GET(request: NextRequest) {
   try {
     const albums = await searchAlbums(q.trim());
     return NextResponse.json(albums);
-  } catch (error) {
-    console.error("Spotify search error:", error);
+  } catch (error: any) {
+    console.error("Spotify search error:", error?.message, error?.cause);
     return NextResponse.json(
-      { error: "Search is temporarily unavailable. Try again later." },
+      { error: "Search is temporarily unavailable. Try again later.", detail: error?.message },
       { status: 503 }
     );
   }
