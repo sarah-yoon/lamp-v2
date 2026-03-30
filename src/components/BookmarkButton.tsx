@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Bookmark, BookmarkCheck } from "lucide-react";
 
 interface BookmarkButtonProps {
   albumId: string;
@@ -61,7 +62,7 @@ export function BookmarkButton({ albumId, albumData, initialSaved = false }: Boo
           : "text-text-tertiary hover:text-text-primary bg-bg/60"
       }`}
     >
-      {saved ? "🔖" : "🔖"}
+      {saved ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
     </button>
   );
 }

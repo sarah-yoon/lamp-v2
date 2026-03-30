@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Music } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
 
 interface AlbumCardProps {
@@ -24,7 +25,9 @@ export function AlbumCard({ id, name, artist, imageUrl, showBookmark = false, in
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-text-tertiary text-2xl">🎵</div>
+          <div className="w-full h-full flex items-center justify-center text-text-tertiary">
+            <Music className="w-8 h-8" />
+          </div>
         )}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
         {showBookmark && (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { Lock } from "lucide-react";
 import { ReviewForm } from "./ReviewForm";
 import { ReviewCard } from "./ReviewCard";
 import type { ReviewsResponse } from "@/types";
@@ -82,7 +83,9 @@ export function ReviewsSection({ albumId, albumName, albumArtist, albumImageUrl 
     return (
       <div className="border border-surface-border rounded-lg p-6">
         <div className="text-center mb-6">
-          <div className="text-2xl mb-2">🔒</div>
+          <div className="mb-2 text-text-tertiary">
+            <Lock className="w-6 h-6 mx-auto" />
+          </div>
           <h3 className="text-lg font-semibold text-text-primary mb-1">Rate this album to unlock reviews</h3>
           <p className="text-sm text-text-secondary">
             {data.count > 0
