@@ -30,6 +30,7 @@ export function AlbumRow({ title, albums, emptyMessage }: AlbumRowProps) {
               name={album.name}
               artist={album.artists.map((a) => a.name).join(", ")}
               imageUrl={album.images[0]?.url || ""}
+              showBookmark
             />
           ))}
         </div>

@@ -68,6 +68,7 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
             <BookmarkButton
               albumId={id}
               albumData={{ name: album.name, artist, imageUrl }}
+              variant="button"
             />
           </div>
         </div>

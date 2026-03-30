@@ -11,9 +11,10 @@ interface BookmarkButtonProps {
     imageUrl: string;
   };
   initialSaved?: boolean;
+  variant?: "icon" | "button";
 }
 
-export function BookmarkButton({ albumId, albumData, initialSaved = false }: BookmarkButtonProps) {
+export function BookmarkButton({ albumId, albumData, initialSaved = false, variant = "icon" }: BookmarkButtonProps) {
   const [saved, setSaved] = useState(initialSaved);
   const [loading, setLoading] = useState(false);
 
@@ -46,6 +47,27 @@ export function BookmarkButton({ albumId, albumData, initialSaved = false }: Boo
     } finally {
       setLoading(false);
     }
+  }
+
+  if (variant === "button") {
+    return (
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggle();
+        }}
+        aria-label={saved ? "Unsave album" : "Save album"}
+        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+          saved
+            ? "bg-accent-gold/10 border border-accent-gold/30 text-accent-gold"
+            : "bg-surface border border-surface-border text-text-secondary hover:text-text-primary"
+        }`}
+      >
+        {saved ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+        {saved ? "Saved" : "Save to Library"}
+      </button>
+    );
   }
 
   return (
