@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bookmark, BookmarkCheck } from "lucide-react";
 
 interface BookmarkButtonProps {
@@ -17,12 +17,32 @@ interface BookmarkButtonProps {
 export function BookmarkButton({ albumId, albumData, initialSaved = false, variant = "icon" }: BookmarkButtonProps) {
   const [saved, setSaved] = useState(initialSaved);
   const [loading, setLoading] = useState(false);
+  const [checked, setChecked] = useState(false);
+
+  // Check if album is already saved on mount
+  useEffect(() => {
+    if (initialSaved || checked) return;
+    async function checkSaved() {
+      try {
+        const res = await fetch(`/api/want-to-listen/${albumId}`);
+        if (res.ok) {
+          const data = await res.json();
+          setSaved(data.saved);
+        }
+      } catch {
+        // Silently fail
+      } finally {
+        setChecked(true);
+      }
+    }
+    checkSaved();
+  }, [albumId, initialSaved, checked]);
 
   async function toggle() {
     if (loading) return;
 
     const wasSaved = saved;
-    setSaved(!wasSaved); // Optimistic
+    setSaved(!wasSaved);
     setLoading(true);
 
     try {
@@ -43,11 +63,13 @@ export function BookmarkButton({ albumId, albumData, initialSaved = false, varia
         if (!res.ok) throw new Error();
       }
     } catch {
-      setSaved(wasSaved); // Revert on error
+      setSaved(wasSaved);
     } finally {
       setLoading(false);
     }
   }
+
+  const SavedIcon = saved ? BookmarkCheck : Bookmark;
 
   if (variant === "button") {
     return (
@@ -64,7 +86,7 @@ export function BookmarkButton({ albumId, albumData, initialSaved = false, varia
             : "bg-surface border border-surface-border text-text-secondary hover:text-text-primary"
         }`}
       >
-        {saved ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+        <SavedIcon className="w-4 h-4" />
         {saved ? "Saved" : "Save to Library"}
       </button>
     );
@@ -84,7 +106,7 @@ export function BookmarkButton({ albumId, albumData, initialSaved = false, varia
           : "text-text-tertiary hover:text-text-primary bg-bg/60"
       }`}
     >
-      {saved ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+      <SavedIcon className="w-4 h-4" />
     </button>
   );
 }

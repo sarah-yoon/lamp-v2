@@ -11,12 +11,18 @@ const albumData = {
   imageUrl: "https://example.com/img.jpg",
 };
 
+// Helper: mock the initial check-if-saved fetch that fires on mount
+function mockInitialCheck(saved: boolean) {
+  mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ saved }) });
+}
+
 describe("BookmarkButton", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("renders unsaved state by default", () => {
+    mockInitialCheck(false);
     render(<BookmarkButton albumId="abc" albumData={albumData} />);
     const button = screen.getByRole("button", { name: /save/i });
     expect(button).toBeInTheDocument();
@@ -29,9 +35,15 @@ describe("BookmarkButton", () => {
   });
 
   it("toggles to saved on click (optimistic)", async () => {
+    mockInitialCheck(false);
     mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({}) });
 
     render(<BookmarkButton albumId="abc" albumData={albumData} />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /save/i })).toBeInTheDocument();
+    });
+
     fireEvent.click(screen.getByRole("button", { name: /save/i }));
 
     await waitFor(() => {
@@ -40,9 +52,15 @@ describe("BookmarkButton", () => {
   });
 
   it("reverts on failed save", async () => {
+    mockInitialCheck(false);
     mockFetch.mockResolvedValueOnce({ ok: false });
 
     render(<BookmarkButton albumId="abc" albumData={albumData} />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /save/i })).toBeInTheDocument();
+    });
+
     fireEvent.click(screen.getByRole("button", { name: /save/i }));
 
     await waitFor(() => {
@@ -51,9 +69,17 @@ describe("BookmarkButton", () => {
   });
 
   it("calls POST to save and DELETE to unsave", async () => {
-    mockFetch.mockResolvedValue({ ok: true, json: () => Promise.resolve({}) });
+    mockInitialCheck(false);
+    // POST for save
+    mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({}) });
+    // DELETE for unsave
+    mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({}) });
 
     render(<BookmarkButton albumId="abc" albumData={albumData} />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /save/i })).toBeInTheDocument();
+    });
 
     // Save
     fireEvent.click(screen.getByRole("button", { name: /save/i }));
@@ -66,5 +92,17 @@ describe("BookmarkButton", () => {
     await waitFor(() => {
       expect(mockFetch).toHaveBeenCalledWith("/api/want-to-listen/abc", expect.objectContaining({ method: "DELETE" }));
     });
+  });
+
+  it("checks saved state on mount", async () => {
+    mockInitialCheck(true);
+
+    render(<BookmarkButton albumId="abc" albumData={albumData} />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /unsave/i })).toBeInTheDocument();
+    });
+
+    expect(mockFetch).toHaveBeenCalledWith("/api/want-to-listen/abc");
   });
 });
