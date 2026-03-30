@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { href: "/saved", label: "Saved", icon: "🔖" },
 ];
 
-export default function Sidebar({ username }: { username: string }) {
+export default function Sidebar({ username, avatarUrl }: { username: string; avatarUrl: string | null }) {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
@@ -56,9 +56,17 @@ export default function Sidebar({ username }: { username: string }) {
       {/* User section */}
       <div className="px-3 py-4 border-t border-surface-border">
         <div className="flex items-center gap-3 px-3 py-2 mb-1">
-          <div className="w-8 h-8 rounded-full bg-accent-gold flex items-center justify-center text-bg font-semibold text-sm flex-shrink-0">
-            {username[0]?.toUpperCase()}
-          </div>
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt={username}
+              className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+            />
+          ) : (
+            <div className="w-8 h-8 rounded-full bg-accent-gold flex items-center justify-center text-bg font-semibold text-sm flex-shrink-0">
+              {username[0]?.toUpperCase()}
+            </div>
+          )}
           <span className="text-sm text-text-primary truncate">{username}</span>
         </div>
         <button

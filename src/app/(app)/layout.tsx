@@ -14,7 +14,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("username")
+    .select("username, avatar_url")
     .eq("id", user.id)
     .single();
 
@@ -24,8 +24,8 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <>
-      <Sidebar username={profile.username} />
-      <MobileNav username={profile.username} />
+      <Sidebar username={profile.username} avatarUrl={profile?.avatar_url || null} />
+      <MobileNav username={profile.username} avatarUrl={profile?.avatar_url || null} />
       <main className="md:ml-[220px] pb-20 md:pb-0">
         <div className="max-w-5xl mx-auto px-4 md:px-8 py-6 md:py-8">
           {children}
