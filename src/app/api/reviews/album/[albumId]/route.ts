@@ -32,17 +32,26 @@ export async function GET(
     return NextResponse.json({ locked: true, count: count || 0 });
   }
 
-  // User has reviewed — fetch all reviews with usernames
+  // User has reviewed — fetch all reviews
   const { data: reviews } = await supabase
     .from("reviews")
-    .select("*, profiles!inner(username)")
+    .select("*")
     .eq("spotify_album_id", albumId)
     .order("created_at", { ascending: false });
 
+  // Fetch usernames for all review authors
+  const userIds = [...new Set((reviews || []).map((r: any) => r.user_id))];
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("id, username")
+    .in("id", userIds);
+
+  const usernameMap = new Map<string, string>();
+  (profiles || []).forEach((p: any) => usernameMap.set(p.id, p.username));
+
   const formattedReviews = (reviews || []).map((r: any) => ({
     ...r,
-    username: r.profiles?.username || "unknown",
-    profiles: undefined,
+    username: usernameMap.get(r.user_id) || "unknown",
   }));
 
   return NextResponse.json({
