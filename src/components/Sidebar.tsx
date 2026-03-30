@@ -56,7 +56,10 @@ export default function Sidebar({ username, avatarUrl }: { username: string; ava
 
       {/* User section */}
       <div className="px-3 py-4 border-t border-surface-border">
-        <div className="flex items-center gap-3 px-3 py-2 mb-1">
+        <Link
+          href={`/profile/${username}`}
+          className="flex items-center gap-3 px-3 py-2 mb-1 rounded-lg hover:bg-surface transition-colors"
+        >
           {avatarUrl ? (
             <img
               src={avatarUrl}
@@ -69,7 +72,7 @@ export default function Sidebar({ username, avatarUrl }: { username: string; ava
             </div>
           )}
           <span className="text-sm text-text-primary truncate">{username}</span>
-        </div>
+        </Link>
         <button
           onClick={handleSignOut}
           className="w-full text-left px-3 py-2 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-surface transition-colors flex items-center gap-3"
