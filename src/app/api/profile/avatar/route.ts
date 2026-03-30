@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
   }
 
   const ext = file.name.split(".").pop() || "jpg";
-  const filePath = `${user.id}.${ext}`;
+  const filePath = `${user.id}/avatar.${ext}`;
 
   const { error: uploadError } = await supabase.storage
     .from("avatars")
