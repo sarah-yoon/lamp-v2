@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getAlbum } from "@/lib/spotify";
 import { Tracklist } from "@/components/Tracklist";
 import { ReviewsSection } from "@/components/ReviewsSection";
+import { BookmarkButton } from "@/components/BookmarkButton";
 import type { Metadata } from "next";
 
 interface AlbumPageProps {
@@ -63,6 +64,12 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
           <h1 className="text-2xl md:text-3xl font-bold text-text-primary mb-1">{album.name}</h1>
           <p className="text-text-secondary">{artist}</p>
           <p className="text-sm text-text-tertiary mt-1">{year} · {album.tracks.items.length} tracks</p>
+          <div className="mt-3">
+            <BookmarkButton
+              albumId={id}
+              albumData={{ name: album.name, artist, imageUrl }}
+            />
+          </div>
         </div>
       </div>
 
