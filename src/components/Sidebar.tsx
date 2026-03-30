@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { Music, Search, TrendingUp, Bookmark, LogOut } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/explore", label: "Explore", icon: "🎵" },
-  { href: "/search", label: "Search", icon: "🔍" },
-  { href: "/trending", label: "Trending", icon: "🔥" },
-  { href: "/saved", label: "Saved", icon: "🔖" },
+  { href: "/explore", label: "Explore", icon: Music },
+  { href: "/search", label: "Search", icon: Search },
+  { href: "/trending", label: "Trending", icon: TrendingUp },
+  { href: "/saved", label: "Saved", icon: Bookmark },
 ];
 
 export default function Sidebar({ username, avatarUrl }: { username: string; avatarUrl: string | null }) {
@@ -33,7 +34,7 @@ export default function Sidebar({ username, avatarUrl }: { username: string; ava
 
       {/* Nav links */}
       <nav className="flex-1 px-3 py-2 flex flex-col gap-1">
-        {NAV_LINKS.map(({ href, label, icon }) => {
+        {NAV_LINKS.map(({ href, label, icon: Icon }) => {
           const isActive = pathname === href || pathname.startsWith(href + "/");
           return (
             <Link
@@ -46,7 +47,7 @@ export default function Sidebar({ username, avatarUrl }: { username: string; ava
                   : "text-text-secondary hover:text-text-primary hover:bg-surface",
               ].join(" ")}
             >
-              <span className="text-base">{icon}</span>
+              <Icon className="w-4 h-4" />
               {label}
             </Link>
           );
@@ -71,8 +72,9 @@ export default function Sidebar({ username, avatarUrl }: { username: string; ava
         </div>
         <button
           onClick={handleSignOut}
-          className="w-full text-left px-3 py-2 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-surface transition-colors"
+          className="w-full text-left px-3 py-2 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-surface transition-colors flex items-center gap-3"
         >
+          <LogOut className="w-4 h-4" />
           Sign out
         </button>
       </div>

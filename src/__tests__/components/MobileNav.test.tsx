@@ -25,9 +25,9 @@ describe("MobileNav", () => {
 
   it("renders icons for each tab", () => {
     render(<MobileNav username="testuser" />);
-    expect(screen.getByText("🎵")).toBeInTheDocument();
-    expect(screen.getByText("🔥")).toBeInTheDocument();
-    expect(screen.getByText("🔖")).toBeInTheDocument();
-    expect(screen.getByText("👤")).toBeInTheDocument();
+    expect(screen.getByText("Explore").closest("a")?.querySelector("svg")).toBeInTheDocument();
+    expect(screen.getByText("Trending").closest("a")?.querySelector("svg")).toBeInTheDocument();
+    expect(screen.getByText("Saved").closest("a")?.querySelector("svg")).toBeInTheDocument();
+    expect(screen.getByText("Profile").closest("a")?.querySelector("svg")).toBeInTheDocument();
   });
 });
