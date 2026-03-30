@@ -26,14 +26,25 @@ async function getAccessToken(): Promise<string> {
   return accessToken!;
 }
 
-async function spotifyFetch(endpoint: string, revalidate?: number) {
+async function spotifyFetch(endpoint: string, cache?: "no-store" | number) {
   const token = await getAccessToken();
-  const res = await fetch(`https://api.spotify.com/v1${endpoint}`, {
+  const options: RequestInit & { next?: { revalidate: number } } = {
     headers: { Authorization: `Bearer ${token}` },
-    next: revalidate !== undefined ? { revalidate } : undefined,
-  });
+  };
+
+  if (cache === "no-store") {
+    options.cache = "no-store";
+  } else if (typeof cache === "number") {
+    options.next = { revalidate: cache };
+  }
+
+  const url = `https://api.spotify.com/v1${endpoint}`;
+  console.log("Spotify fetch:", url);
+  const res = await fetch(url, options);
 
   if (!res.ok) {
+    const body = await res.text();
+    console.error("Spotify error body:", body);
     throw new Error(`Spotify API error: ${res.status} ${res.statusText}`);
   }
 
@@ -42,8 +53,8 @@ async function spotifyFetch(endpoint: string, revalidate?: number) {
 
 export async function searchAlbums(query: string) {
   const data = await spotifyFetch(
-    `/search?type=album&q=${encodeURIComponent(query)}&limit=20`,
-    0
+    `/search?type=album&q=${encodeURIComponent(query)}&limit=10`,
+    "no-store"
   );
   return data.albums.items;
 }
@@ -53,6 +64,22 @@ export async function getAlbum(id: string) {
 }
 
 export async function getNewReleases() {
-  const data = await spotifyFetch("/browse/new-releases?limit=20", 3600);
+  const data = await spotifyFetch("/browse/new-releases?limit=10", 3600);
+  return data.albums.items;
+}
+
+export async function searchByYear(year: number) {
+  const data = await spotifyFetch(
+    `/search?type=album&q=year%3A${year}&limit=10`,
+    3600
+  );
+  return data.albums.items;
+}
+
+export async function searchByGenre(genre: string) {
+  const data = await spotifyFetch(
+    `/search?type=album&q=genre%3A${encodeURIComponent(genre)}&limit=10`,
+    3600
+  );
   return data.albums.items;
 }
