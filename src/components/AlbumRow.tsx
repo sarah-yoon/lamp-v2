@@ -22,16 +22,15 @@ export function AlbumRow({ title, albums, emptyMessage }: AlbumRowProps) {
       {albums.length === 0 ? (
         <p className="text-text-secondary text-sm">{emptyMessage}</p>
       ) : (
-        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {albums.map((album) => (
-            <div key={album.id} className="flex-shrink-0 w-36">
-              <AlbumCard
-                id={album.id}
-                name={album.name}
-                artist={album.artists.map((a) => a.name).join(", ")}
-                imageUrl={album.images[0]?.url || ""}
-              />
-            </div>
+            <AlbumCard
+              key={album.id}
+              id={album.id}
+              name={album.name}
+              artist={album.artists.map((a) => a.name).join(", ")}
+              imageUrl={album.images[0]?.url || ""}
+            />
           ))}
         </div>
       )}

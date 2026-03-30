@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { AlbumCard } from "@/components/AlbumCard";
 import { StarRating } from "@/components/StarRating";
 
@@ -29,9 +29,11 @@ export default function TrendingPage() {
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const limit = 20;
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setOffset(0);
+    setAlbums([]);
     fetchTrending(0, period);
   }, [period]);
 
@@ -53,11 +55,30 @@ export default function TrendingPage() {
     }
   }
 
-  function loadMore() {
-    const newOffset = offset + limit;
-    setOffset(newOffset);
-    fetchTrending(newOffset, period);
-  }
+  // Infinite scroll via IntersectionObserver
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
+      if (entry.isIntersecting && hasMore && !loading) {
+        const newOffset = offset + limit;
+        setOffset(newOffset);
+        fetchTrending(newOffset, period);
+      }
+    },
+    [hasMore, loading, offset, period]
+  );
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(handleObserver, {
+      rootMargin: "200px",
+    });
+    observer.observe(sentinel);
+
+    return () => observer.disconnect();
+  }, [handleObserver]);
 
   return (
     <div>
@@ -117,17 +138,14 @@ export default function TrendingPage() {
             ))}
           </div>
 
-          {hasMore && (
-            <div className="text-center mt-8">
-              <button
-                onClick={loadMore}
-                disabled={loading}
-                className="px-6 py-2.5 bg-surface border border-surface-border rounded-lg text-sm text-text-secondary hover:text-text-primary transition-colors disabled:opacity-50"
-              >
-                {loading ? "Loading…" : "Load More"}
-              </button>
-            </div>
-          )}
+          {/* Infinite scroll sentinel */}
+          <div ref={sentinelRef} className="h-10">
+            {loading && (
+              <div className="flex justify-center py-4">
+                <div className="text-text-tertiary text-sm">Loading more...</div>
+              </div>
+            )}
+          </div>
         </>
       )}
     </div>
