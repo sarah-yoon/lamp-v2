@@ -3,6 +3,12 @@ import { createClient } from "@/lib/supabase/server";
 import Sidebar from "@/components/Sidebar";
 import MobileNav from "@/components/MobileNav";
 
+export const metadata = {
+  icons: {
+    icon: '/favicon.svg',
+  },
+}
+
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
 
