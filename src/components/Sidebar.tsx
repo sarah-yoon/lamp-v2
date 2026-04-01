@@ -23,11 +23,11 @@ export default function Sidebar({ username, avatarUrl }: { username: string; ava
   }
 
   return (
-    <aside className="hidden md:flex flex-col fixed left-0 top-0 h-full w-[220px] bg-bg-light border-r border-surface-border z-40">
+    <aside className="hidden md:flex flex-col fixed left-0 top-0 h-full w-[220px] backdrop-blur-xl bg-white/10 border-r border-white/20 shadow-lg z-40">
       {/* Logo */}
       <div className="px-6 py-5 flex items-center gap-2">
         <span className="text-xl font-bold text-text-primary tracking-tight">
-          LAMP
+          <span className="font-display">LAMP</span>
         </span>
         <span className="w-2 h-2 rounded-full bg-accent-coral inline-block" />
       </div>
@@ -43,8 +43,8 @@ export default function Sidebar({ username, avatarUrl }: { username: string; ava
               className={[
                 "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors",
                 isActive
-                  ? "bg-surface text-accent-gold font-medium"
-                  : "text-text-secondary hover:text-text-primary hover:bg-surface",
+                  ? "bg-white/20 border border-white/30 text-accent-gold font-medium"
+                  : "text-text-secondary hover:text-text-primary hover:bg-white/10",
               ].join(" ")}
             >
               <Icon className="w-4 h-4" />
@@ -55,10 +55,10 @@ export default function Sidebar({ username, avatarUrl }: { username: string; ava
       </nav>
 
       {/* User section */}
-      <div className="px-3 py-4 border-t border-surface-border">
+      <div className="px-3 py-4 border-t border-white/20">
         <Link
           href={`/profile/${username}`}
-          className="flex items-center gap-3 px-3 py-2 mb-1 rounded-lg hover:bg-surface transition-colors"
+          className="flex items-center gap-3 px-3 py-2 mb-1 rounded-lg hover:bg-white/10 transition-colors"
         >
           {avatarUrl ? (
             <img
@@ -75,7 +75,7 @@ export default function Sidebar({ username, avatarUrl }: { username: string; ava
         </Link>
         <button
           onClick={handleSignOut}
-          className="w-full text-left px-3 py-2 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-surface transition-colors flex items-center gap-3"
+          className="w-full text-left px-3 py-2 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-white/10 transition-colors flex items-center gap-3"
         >
           <LogOut className="w-4 h-4" />
           Sign out

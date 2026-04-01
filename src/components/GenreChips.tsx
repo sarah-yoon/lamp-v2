@@ -31,8 +31,8 @@ export default function GenreChips({ selected, onChange }: GenreChipsProps) {
             onClick={() => toggle(genre)}
             className={`px-4 py-2 rounded-full text-sm transition-all ${
               isSelected
-                ? "bg-accent-gold text-bg font-semibold"
-                : "bg-surface border border-surface-border text-text-secondary hover:border-accent-gold/30"
+                ? "bg-accent-gold text-bg font-semibold border border-accent-gold"
+                : "glass-pill text-text-secondary hover:text-text-primary"
             }`}
           >
             {genre}

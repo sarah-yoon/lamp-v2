@@ -50,7 +50,7 @@ export function SearchBar({ onResults, onLoading, placeholder = "Search albums..
       value={query}
       onChange={(e) => setQuery(e.target.value)}
       placeholder={placeholder}
-      className={`w-full bg-surface border border-surface-border rounded-lg px-3 py-2 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-gold/50 transition-colors ${className}`}
+      className={`w-full backdrop-blur-md bg-white/20 border border-white/40 rounded-lg px-3 py-2 text-sm text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-gold/50 transition-colors ${className}`}
     />
   );
 }

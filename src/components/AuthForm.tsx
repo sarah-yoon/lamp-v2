@@ -32,7 +32,6 @@ export default function AuthForm({ mode }: AuthFormProps) {
           options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
         });
         if (error) throw error;
-        // If email confirmation is enabled, user won't have a session yet
         if (data.session) {
           router.push("/onboarding");
           router.refresh();
@@ -43,7 +42,6 @@ export default function AuthForm({ mode }: AuthFormProps) {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
 
-        // Check if user has a profile
         const { data: profile } = await supabase
           .from("profiles")
           .select("id")
@@ -70,9 +68,9 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
   if (confirmationSent) {
     return (
-      <div className="w-full max-w-sm text-center">
+      <div className="glass w-full max-w-sm text-center p-8">
         <h1 className="text-3xl font-bold tracking-tight text-text-primary mb-4">
-          LAMP<span className="text-accent-coral">.</span>
+          <span className="font-display">LAMP</span><span className="text-accent-coral">.</span>
         </h1>
         <div className="bg-accent-gold/10 border border-accent-gold/20 rounded-lg px-6 py-5 mb-4">
           <p className="text-accent-gold font-medium mb-1">Check your email</p>
@@ -88,11 +86,11 @@ export default function AuthForm({ mode }: AuthFormProps) {
   }
 
   return (
-    <div className="w-full max-w-sm">
+    <div className="glass w-full max-w-sm p-8">
       {/* Logo */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-text-primary">
-          LAMP<span className="text-accent-coral">.</span>
+          <span className="font-display">LAMP</span><span className="text-accent-coral">.</span>
         </h1>
         <p className="text-text-secondary text-sm mt-2">
           {mode === "login" ? "Welcome back" : "Create your account"}
@@ -112,7 +110,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
             onChange={(e) => setEmail(e.target.value)}
             required
             placeholder="you@example.com"
-            className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2.5 text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-gold/50 transition-colors"
+            className="w-full bg-white/20 border border-white/40 rounded-lg px-3 py-2.5 text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-gold/50 transition-colors"
           />
         </div>
 
@@ -128,7 +126,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
             onChange={(e) => setPassword(e.target.value)}
             required
             placeholder="••••••••"
-            className="w-full bg-surface border border-surface-border rounded-lg px-3 py-2.5 text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-gold/50 transition-colors"
+            className="w-full bg-white/20 border border-white/40 rounded-lg px-3 py-2.5 text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-accent-gold/50 transition-colors"
           />
         </div>
 

@@ -45,16 +45,16 @@ export function ProfileHeader({ profile, stats, isOwn }: ProfileHeaderProps) {
               </Link>
             )}
           </div>
-          <p className="text-sm text-text-tertiary mt-1">Joined {joinDate}</p>
+          <p className="text-sm text-text-tertiary mt-1 font-mono font-light">Joined {joinDate}</p>
           {profile.bio && (
-            <p className="text-sm text-text-secondary mt-2">{profile.bio}</p>
+            <p className="text-sm text-text-secondary mt-2 font-serif">{profile.bio}</p>
           )}
           {profile.favorite_genres.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-3 justify-center sm:justify-start">
               {profile.favorite_genres.map((genre) => (
                 <span
                   key={genre}
-                  className="text-xs px-2.5 py-1 rounded-full bg-surface border border-surface-border text-text-secondary"
+                  className="text-xs px-2.5 py-1 rounded-full bg-surface border border-surface-border text-text-secondary font-mono font-light"
                 >
                   {genre}
                 </span>
@@ -66,12 +66,12 @@ export function ProfileHeader({ profile, stats, isOwn }: ProfileHeaderProps) {
 
       <div className="flex gap-6 justify-center sm:justify-start">
         <div className="text-center">
-          <p className="text-xl font-bold text-text-primary">{stats.totalReviews}</p>
-          <p className="text-xs text-text-tertiary uppercase tracking-wider">Albums Rated</p>
+          <p className="text-xl font-bold text-text-primary font-mono">{stats.totalReviews}</p>
+          <p className="text-xs text-text-tertiary uppercase tracking-wider font-mono font-light">Albums Rated</p>
         </div>
         <div className="text-center">
-          <p className="text-xl font-bold text-text-primary">{stats.avgRating || "—"}</p>
-          <p className="text-xs text-text-tertiary uppercase tracking-wider">Avg Rating</p>
+          <p className="text-xl font-bold text-text-primary font-mono">{stats.avgRating || "—"}</p>
+          <p className="text-xs text-text-tertiary uppercase tracking-wider font-mono font-light">Avg Rating</p>
         </div>
       </div>
     </div>

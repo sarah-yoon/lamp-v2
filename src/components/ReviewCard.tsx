@@ -16,7 +16,7 @@ export function ReviewCard({ username, rating, reviewText, createdAt, isOwn, onE
   });
 
   return (
-    <div className={`p-4 rounded-lg border ${isOwn ? "border-accent-gold/30 bg-accent-gold/5" : "border-surface-border bg-surface"}`}>
+    <div className={isOwn ? "glass p-4 border border-accent-gold/40" : "glass p-4"}>
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           {isOwn && (
@@ -25,7 +25,7 @@ export function ReviewCard({ username, rating, reviewText, createdAt, isOwn, onE
             </span>
           )}
           <span className="text-sm font-medium text-text-primary">{username}</span>
-          <span className="text-xs text-text-tertiary">{date}</span>
+          <span className="text-xs text-text-tertiary font-mono font-light">{date}</span>
         </div>
         {isOwn && (
           <div className="flex gap-2">
@@ -36,7 +36,7 @@ export function ReviewCard({ username, rating, reviewText, createdAt, isOwn, onE
       </div>
       <StarRating value={rating} readonly size="sm" />
       {reviewText && (
-        <p className="text-sm text-text-secondary mt-2 leading-relaxed">{reviewText}</p>
+        <p className="text-sm text-text-secondary font-serif mt-2 leading-relaxed">{reviewText}</p>
       )}
     </div>
   );

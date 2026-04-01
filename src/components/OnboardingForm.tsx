@@ -85,7 +85,7 @@ export default function OnboardingForm() {
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-text-primary">
-          LAMP<span className="text-accent-coral">.</span>
+          <span className="font-display">LAMP</span><span className="text-accent-coral">.</span>
         </h1>
         <p className="text-text-secondary text-sm mt-2">Set up your profile</p>
       </div>

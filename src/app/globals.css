@@ -1,18 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Coral+Pixels&display=swap");
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg: #0c0c14;
-  --color-bg-light: #12111a;
-  --color-accent-gold: #ffd93d;
-  --color-accent-coral: #ff6b6b;
-  --color-text-primary: #ececf1;
-  --color-text-secondary: #9b9baa;
-  --color-text-tertiary: #6b6b7b;
-  --color-surface: rgba(255, 255, 255, 0.03);
-  --color-surface-hover: rgba(255, 255, 255, 0.06);
-  --color-surface-border: rgba(255, 255, 255, 0.08);
-  --font-sans: var(--font-inter), system-ui, sans-serif;
-  --width-sidebar: 220px;
+  --color-bg: #dee3df;
+  --color-bg-light: #fffffe;
+  --color-accent-gold: #33D728;
+  --color-accent-coral: #ed2225;
+  --color-text-primary: #0a0a0a;
+  --color-text-secondary: #3a3a3a;
+  --color-text-tertiary: #6b6b6b;
+  --color-surface: #6b726f;
+  --color-surface-hover: rgba(107, 114, 111, 0.85);
+  --color-surface-border: rgba(107, 114, 111, 0.3);
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-ibm), "IBM Plex Mono", monospace;
+  --font-serif: var(--font-source), "Source Serif 4", Georgia, serif;
+  --font-display: "Coral Pixels", system-ui, sans-serif;
+ 
 }
 
 @layer base {
@@ -24,14 +28,123 @@
   }
 }
 
+/* Text hierarchy */
+/* Primary — Inter Medium, use font-sans + font-medium */
+/* Secondary — IBM Plex Mono Light, use font-mono + font-light */
+/* Tertiary — Source Serif Pro Regular, use font-serif */
+
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .skeleton {
-  background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.04) 25%, rgba(0, 0, 0, 0.08) 50%, rgba(0, 0, 0, 0.04) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: 6px;
+}
+
+/* Liquid glass utilities
+   Requires a blurred/colorful background behind the element to look right.
+   backdrop-filter only works when the element has a semi-transparent background. */
+
+/* Light glass — use on cards, modals, panels */
+.glass {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255, 255, 254, 0.18);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.6) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.08) inset,
+    0 8px 32px rgba(0, 0, 0, 0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 20px 20px 0 0;
+  pointer-events: none;
+}
+
+/* Dark glass — use on sidebar, overlays, secondary panels */
+.glass-dark {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(107, 114, 111, 0.35);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.25) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.15) inset,
+    0 8px 32px rgba(0, 0, 0, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-dark::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+  border-radius: 20px 20px 0 0;
+  pointer-events: none;
+}
+
+/* Glass pill — nav tags, badges, filter chips */
+.glass-pill {
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  background: rgba(255, 255, 254, 0.22);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55) inset,
+    0 4px 16px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+}
+
+/* Glass nav/sidebar item — for the 220px sidebar */
+.glass-nav-item {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 254, 0.14);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset;
+  padding: 10px 14px;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.glass-nav-item:hover {
+  background: rgba(255, 255, 254, 0.26);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset;
+}
+
+/* Reduced motion — respect system preference */
+@media (prefers-reduced-motion: reduce) {
+  .glass,
+  .glass-dark,
+  .glass-pill,
+  .glass-nav-item {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 254, 0.85);
+  }
 }
