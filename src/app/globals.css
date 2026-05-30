@@ -33,6 +33,24 @@
 /* Secondary — IBM Plex Mono Light, use font-mono + font-light */
 /* Tertiary — Source Serif Pro Regular, use font-serif */
 
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  animation: ticker 14s linear infinite;
+}
+
+@keyframes spin-cd {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.cd-spin {
+  animation: spin-cd 10s linear infinite;
+}
+
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -102,6 +120,69 @@
   background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
   border-radius: 20px 20px 0 0;
   pointer-events: none;
+}
+
+/* Liquid glass buttons */
+
+/* Frosted — Sign In, iridescent glass with purple border */
+.glass-btn {
+  backdrop-filter: blur(0px) saturate(200%);
+  -webkit-backdrop-filter: blur(0x) saturate(200%);
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: background 0.15s ease;
+}
+
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+/* Landing page buttons */
+.btn-join {
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(0px) saturate(160%);
+  -webkit-backdrop-filter: blur(0pxx) saturate(160%);
+  /* background: rgba(0, 185, 89, 0.282); */
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-join:hover {
+  background: rgba(42, 228, 169, 0.422);
+  box-shadow: 0 12px 36px rgba(37, 171, 102, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+.btn-signin {
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  background: rgba(255, 255, 255, 0.25);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-signin:hover {
+  background: rgba(255, 255, 255, 0.38);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+/* Green tinted liquid glass — join LAMP */
+.glass-btn-green {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(37, 171, 102, 0.22);
+  border-radius: 999px;
+  border: none;
+  box-shadow: 0 2px 10px rgba(37, 171, 102, 0.18);
+  transition: background 0.15s ease;
+}
+
+.glass-btn-green:hover {
+  background: rgba(37, 171, 102, 0.32);
 }
 
 /* Glass pill — nav tags, badges, filter chips */
