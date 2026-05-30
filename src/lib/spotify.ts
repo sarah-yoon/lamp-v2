@@ -1,7 +1,7 @@
 let accessToken: string | null = null;
 let tokenExpiry: number = 0;
 
-async function getAccessToken(): Promise<string> {
+export async function getAccessToken(): Promise<string> {
   if (accessToken && Date.now() < tokenExpiry) {
     return accessToken;
   }
@@ -64,7 +64,10 @@ export async function getAlbum(id: string) {
 }
 
 export async function getNewReleases() {
-  const data = await spotifyFetch("/browse/new-releases?limit=10", 3600);
+  const data = await spotifyFetch(
+    "/search?type=album&q=tag:new&limit=10",
+    3600
+  );
   return data.albums.items;
 }
 
@@ -82,4 +85,23 @@ export async function searchByGenre(genre: string) {
     3600
   );
   return data.albums.items;
+}
+
+function getDailyVibeQuery(): string {
+  const day = new Date().getDay(); // 0 = Sunday … 6 = Saturday
+  switch (day) {
+    case 0: // Sunday Chill
+      return "/search?type=track&q=genre:chill&limit=10";
+    case 4: // Throwback Thursday
+      return "/search?type=track&q=year:1990-2005&limit=10";
+    case 5: // Friday Energy
+      return "/search?type=track&q=genre:dance&limit=10";
+    default: // Current Hits
+      return "/search?type=track&q=year:2026&limit=10";
+  }
+}
+
+export async function getChartTracks() {
+  const data = await spotifyFetch(getDailyVibeQuery(), 3600);
+  return data.tracks.items;
 }
