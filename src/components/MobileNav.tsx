@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Music, TrendingUp, Bookmark, User } from "lucide-react";
+import { Music, Search, BookMarked, Headphones } from "lucide-react";
 
-export default function MobileNav({ username, avatarUrl }: { username: string; avatarUrl: string | null }) {
+export default function MobileNav() {
   const pathname = usePathname();
 
   const tabs = [
     { href: "/explore", label: "Explore", icon: Music },
-    { href: "/trending", label: "Trending", icon: TrendingUp },
-    { href: "/saved", label: "Saved", icon: Bookmark },
-    { href: `/profile/${username}`, label: "Profile", icon: User },
+    { href: "/search", label: "Search", icon: Search },
+    { href: "/saved", label: "Library", icon: BookMarked },
+    { href: "/listen", label: "Listening", icon: Headphones },
   ];
 
   return (
