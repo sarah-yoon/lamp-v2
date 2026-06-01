@@ -3,13 +3,13 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { Music, Search, TrendingUp, Bookmark, LogOut } from "lucide-react";
+import { Music, Search, BookMarked, Headphones, LogOut } from "lucide-react";
 
 const NAV_LINKS = [
   { href: "/explore", label: "Explore", icon: Music },
   { href: "/search", label: "Search", icon: Search },
-  { href: "/trending", label: "Trending", icon: TrendingUp },
-  { href: "/saved", label: "Saved", icon: Bookmark },
+  { href: "/saved", label: "Library", icon: BookMarked },
+  { href: "/listen", label: "Listening", icon: Headphones },
 ];
 
 export default function Sidebar({ username, avatarUrl }: { username: string; avatarUrl: string | null }) {

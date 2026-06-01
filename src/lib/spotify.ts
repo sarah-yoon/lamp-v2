@@ -63,6 +63,10 @@ export async function getAlbum(id: string) {
   return spotifyFetch(`/albums/${id}`, 86400);
 }
 
+export async function getTrack(id: string) {
+  return spotifyFetch(`/tracks/${id}`, 86400);
+}
+
 export async function getNewReleases() {
   const data = await spotifyFetch(
     "/search?type=album&q=tag:new&limit=10",
